@@ -1,0 +1,5 @@
+com/example/warehouse/entity/Product.class
+com/example/warehouse/controller/ProductController.class
+com/example/warehouse/repository/ProductRepository.class
+com/example/warehouse/service/ProductService.class
+com/example/warehouse/WarehouseInventoryApplication.class

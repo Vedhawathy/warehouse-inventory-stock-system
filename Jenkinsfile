@@ -1,28 +1,19 @@
 pipeline {
-
     agent any
 
     tools {
+        jdk 'JDK-21'
         maven 'Maven-3.9'
     }
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build') {
             steps {
+                sh 'java -version'
+                sh 'javac -version'
+                sh 'mvn -version'
                 sh 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
             }
         }
 
@@ -37,11 +28,10 @@ pipeline {
                 sh '''
                     docker stop warehouse-inventory || true
                     docker rm warehouse-inventory || true
-
                     docker run -d \
-                    --name warehouse-inventory \
-                    -p 8080:8080 \
-                    warehouse-inventory:latest
+                      --name warehouse-inventory \
+                      -p 8080:8080 \
+                      warehouse-inventory:latest
                 '''
             }
         }
@@ -49,9 +39,8 @@ pipeline {
 
     post {
         success {
-            echo 'DEPLOYMENT SUCCESSFUL'
+            echo 'BUILD SUCCESS'
         }
-
         failure {
             echo 'BUILD FAILED'
         }

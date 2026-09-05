@@ -1,0 +1,5 @@
+/root/warehouse-inventory-stock-system/src/main/java/com/example/warehouse/WarehouseInventoryApplication.java
+/root/warehouse-inventory-stock-system/src/main/java/com/example/warehouse/controller/ProductController.java
+/root/warehouse-inventory-stock-system/src/main/java/com/example/warehouse/entity/Product.java
+/root/warehouse-inventory-stock-system/src/main/java/com/example/warehouse/repository/ProductRepository.java
+/root/warehouse-inventory-stock-system/src/main/java/com/example/warehouse/service/ProductService.java
