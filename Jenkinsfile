@@ -19,7 +19,23 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t warehouse-inventory:latest .'
+                sh 'docker build -t vedhawathy/warehouse-inventory:latest .'
+            }
+        }
+
+        stage('Docker Hub Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                        docker push vedhawathy/warehouse-inventory:latest
+                        docker logout
+                    '''
+                }
             }
         }
 
@@ -28,10 +44,11 @@ pipeline {
                 sh '''
                     docker stop warehouse-inventory || true
                     docker rm warehouse-inventory || true
+
                     docker run -d \
                       --name warehouse-inventory \
-                      -p 8080:8080 \
-                      warehouse-inventory:latest
+                      --network host \
+                      vedhawathy/warehouse-inventory:latest
                 '''
             }
         }
@@ -41,6 +58,7 @@ pipeline {
         success {
             echo 'BUILD SUCCESS'
         }
+
         failure {
             echo 'BUILD FAILED'
         }
